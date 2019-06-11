@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Наталья](https://up.htmlacademy.ru/javascript/17/user/940369).
-* Наставник: `Неизвестно`.
+* Наставник: [Виталий Яковенко](https://htmlacademy.ru/profile/id376639).
 
 ---
 
