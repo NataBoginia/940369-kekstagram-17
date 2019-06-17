@@ -23,16 +23,17 @@ var createComments = function (commentsCount) {
   var comments = [];
 
   for (var i = 0; i < commentsCount; i++) {
-    comments[i] = COMMENTS[Math.floor(Math.random() * COMMENTS.length)];
+    var comment = {
+      avatar: 'img/avatar-' + (Math.round(Math.random() * (AVATAR_COUNT_MAX - AVATAR_COUNT_MIN)) + AVATAR_COUNT_MIN) + '.svg',
+      message: (Math.round(Math.random())) ? (COMMENTS[Math.floor(Math.random() * COMMENTS.length)]) : (COMMENTS[Math.floor(Math.random() * COMMENTS.length)] + ' ' + COMMENTS[Math.floor(Math.random() * COMMENTS.length)]),
+      name: NAMES[Math.floor(Math.random() * NAMES.length)]
+    };
 
-    if (true) {
-      comments[i] += COMMENTS[Math.floor(Math.random() * COMMENTS.length)];
-    }
+    comments[i] = comment;
   }
 
   return comments;
 };
-
 
 var createTestPhotos = function (photosCount) {
   var photos = [];
@@ -40,15 +41,38 @@ var createTestPhotos = function (photosCount) {
   for (var i = 1; i <= photosCount; i++) {
     var photo = {
       url: 'photos/' + i + '.jpg',
-      likes: Math.floor(Math.random() * (LIKES_COUNT_MAX - LIKES_COUNT_MIN) + LIKES_COUNT_MIN),
-      comments: createComments(Math.floor(Math.random() * (COMMENTS_COUNT_MAX - COMMENTS_COUNT_MIN) + COMMENTS_COUNT_MIN)),
-      avatar: 'img/avatar-' + Math.floor(Math.random() * (AVATAR_COUNT_MAX - AVATAR_COUNT_MIN) + AVATAR_COUNT_MIN) + '.svg',
-      name: NAMES[Math.floor(Math.random() * NAMES.length)]
+      likes: Math.round(Math.random() * (LIKES_COUNT_MAX - LIKES_COUNT_MIN)) + LIKES_COUNT_MIN,
+      comments: createComments(Math.round(Math.random() * (COMMENTS_COUNT_MAX - COMMENTS_COUNT_MIN)) + COMMENTS_COUNT_MIN)
     };
-    photos[i] = photo;
+    photos[i - 1] = photo;
   }
 
   return photos;
 };
 
+var renderPhoto = function (photo, template) {
+  var photoElement = template.cloneNode(true);
+
+  photoElement.querySelector('.picture__img').src = photo.url;
+  photoElement.querySelector('.picture__likes').textContent = photo.likes;
+  photoElement.querySelector('.picture__comments').textContent = photo.comments.length;
+
+  return photoElement;
+};
+
+var createPhotosBlock = function (photos, template) {
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < photos.length; i++) {
+    fragment.appendChild(renderPhoto(photos[i], template));
+  }
+
+  return fragment;
+};
+
+var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+var targetPhotoBlock = document.querySelector('.pictures');
+
 var photos = createTestPhotos(PHOTOS_COUNT);
+
+targetPhotoBlock.appendChild(createPhotosBlock(photos, pictureTemplate));
