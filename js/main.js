@@ -19,14 +19,20 @@ var COMMENTS = [
 
 var NAMES = ['Анна', 'Богдан', 'Виктория', 'Гена', 'Дима', 'Ева', 'Женя', 'Зина', 'Ира', 'Константин'];
 
+var createRandomInt = function (max, min, excludeMax) {
+  var randomNumber = Math.random() * (max - min) + min;
+
+  return excludeMax ? Math.floor(randomNumber) : Math.round(randomNumber);
+};
+
 var createComments = function (commentsCount) {
   var comments = [];
 
   for (var i = 0; i < commentsCount; i++) {
     var comment = {
-      avatar: 'img/avatar-' + (Math.round(Math.random() * (AVATAR_COUNT_MAX - AVATAR_COUNT_MIN)) + AVATAR_COUNT_MIN) + '.svg',
-      message: (Math.round(Math.random())) ? (COMMENTS[Math.floor(Math.random() * COMMENTS.length)]) : (COMMENTS[Math.floor(Math.random() * COMMENTS.length)] + ' ' + COMMENTS[Math.floor(Math.random() * COMMENTS.length)]),
-      name: NAMES[Math.floor(Math.random() * NAMES.length)]
+      avatar: 'img/avatar-' + createRandomInt(AVATAR_COUNT_MAX, AVATAR_COUNT_MIN, false) + '.svg',
+      message: createRandomInt(1, 0, false) ? COMMENTS[createRandomInt(COMMENTS.length, 0, true)] : (COMMENTS[createRandomInt(COMMENTS.length, 0, true)] + ' ' + COMMENTS[createRandomInt(COMMENTS.length, 0, true)]),
+      name: NAMES[createRandomInt(NAMES.length, 0, true)]
     };
 
     comments[i] = comment;
@@ -41,8 +47,8 @@ var createTestPhotos = function (photosCount) {
   for (var i = 1; i <= photosCount; i++) {
     var photo = {
       url: 'photos/' + i + '.jpg',
-      likes: Math.round(Math.random() * (LIKES_COUNT_MAX - LIKES_COUNT_MIN)) + LIKES_COUNT_MIN,
-      comments: createComments(Math.round(Math.random() * (COMMENTS_COUNT_MAX - COMMENTS_COUNT_MIN)) + COMMENTS_COUNT_MIN)
+      likes: createRandomInt(LIKES_COUNT_MAX, LIKES_COUNT_MIN, false),
+      comments: createComments(createRandomInt(COMMENTS_COUNT_MAX, COMMENTS_COUNT_MIN, false))
     };
     photos[i - 1] = photo;
   }
